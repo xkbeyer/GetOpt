@@ -1,0 +1,42 @@
+# Ignore some of the VC++ user-files
+.editorconfig
+*.vcxproj.user
+*.sdf
+*.suo
+*.ilk
+*.pdb
+*.exe
+*.lib
+*.docstates
+*.log
+*.ex*
+*.opensdf
+
+# Ignore the VC++ build folders
+Debug/
+Release/
+ipch/
+
+# Ignore KDevelop-specific folders too
+.kdev*
+*.kdev4
+
+# Ignore precompiled headers
+*.gch
+
+# Ignore CMake build files
+build/
+CMakeFiles
+linux
+
+# Ignore profiler and debugger files
+gmon.out
+#*.out
+
+# And some system's temp files
+*~
+*.tmp
+*.bak
+
+# Other artifacts not to track
+msg.txt
