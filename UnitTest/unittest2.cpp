@@ -8,7 +8,7 @@ using namespace std;
 
 namespace UnitTest
 {
-    TEST_CLASS( UnitTestGetOpt )
+    TEST_CLASS( UnitTestGetOptForLoop )
     {
     public:
 
