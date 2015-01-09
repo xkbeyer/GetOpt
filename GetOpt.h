@@ -1,7 +1,5 @@
 
 #include <string>
-// TODO implement iterator interface in order to use it w/ a range for loop.
-// TODO make an git repo.
 class GetOpt
 {
 public:
@@ -13,6 +11,24 @@ public:
     void reset() { index = 1; };
     char operator()();
 
+    class iterator
+    {
+    public:
+       iterator(GetOpt* getopt) : getopt( getopt ), position(1) {};
+       iterator(int pos) : position( pos ) {};
+       iterator& operator++( ) { 
+          ++position ; 
+          return *this; 
+       }  // prefix
+       bool operator!=( iterator rhs ) { return position != rhs.position; }
+       char operator*( );
+    private:
+       int position;
+       GetOpt* getopt;
+    };
+    iterator begin() { return iterator( this); }
+    iterator end() { return iterator(argCount); }
+    friend class iterator;
 private:
     std::string optionArgument; /* Global argument pointer. */
     int index; /* Global argv index. */

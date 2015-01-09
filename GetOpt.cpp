@@ -10,7 +10,6 @@ GetOpt::GetOpt( int argc, char* argv[], const std::string optstring )
     , optionString( optstring )
 {
 }
-
 char GetOpt::operator()()
 {
     optionArgument.clear();
@@ -85,3 +84,18 @@ char GetOpt::operator()()
     return c;
 }
 
+
+char GetOpt::iterator::operator*( )
+{
+   auto ret = getopt->operator()();
+   if ( ret == EOF )
+   {
+      position = getopt->argCount - 1; // Set iterator to the end
+   }
+   else
+   {
+      position = getopt->index - 1; // In case index has advanced more than one position.
+   }
+
+   return ret;
+}
