@@ -15,14 +15,13 @@ namespace UnitTest
         TEST_METHOD( TestOpt )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-H/dev/home", "-v", "-d" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-H/user/home", "-v", "-d" };
 
-            Assert::AreEqual( 4, (int)_countof( argv ), L"countof failed" );
             string err;
 
             GetOpt getopt( _countof( argv ), argv, "H:l:vdkh" );
@@ -31,19 +30,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -53,10 +52,10 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsTrue( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), sHome, L"home differs" );
+            Assert::IsTrue( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), homePath, L"home differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
             Assert::IsTrue( err.empty(), L"err differs" );
         }
@@ -64,12 +63,12 @@ namespace UnitTest
         TEST_METHOD( TestOptArg )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-H", "/dev/home", "-v", "-d" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-H", "/user/home", "-v", "-d" };
 
             string err;
 
@@ -79,19 +78,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -101,10 +100,10 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsTrue( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), sHome, L"home differs" );
+            Assert::IsTrue( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), homePath, L"home differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
             Assert::IsTrue( err.empty(), L"err differs" );
         }
@@ -112,12 +111,12 @@ namespace UnitTest
         TEST_METHOD( TestOpt2Args )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-H", "/dev/home", "-l/dev/log", "-d" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-H", "/user/home", "-l/user/log", "-d" };
 
             string err;
 
@@ -127,19 +126,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -149,22 +148,22 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), sHome, L"home differs" );
-            Assert::AreEqual( string( "/dev/log" ), logdir, L"log differs" );
+            Assert::IsFalse( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), homePath, L"home differs" );
+            Assert::AreEqual( string( "/user/log" ), logdir, L"log differs" );
             Assert::IsTrue( err.empty(), L"err differs" );
         }
 
         TEST_METHOD( TestOptMissingArg )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
             char* argv[] = { "prg.exe", "-d", "-l" };
 
             string err;
@@ -175,19 +174,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -197,22 +196,22 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "prg.exe: option requires argument -l\n" ), err, L"error msg differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
 
         TEST_METHOD( TestOptUnknownArg )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
             char* argv[] = { "prg.exe", "-d", "-u" };
 
             string err;
@@ -223,19 +222,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -245,22 +244,22 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "prg.exe: unknown option -u\n" ), err, L"error msg differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
 
         TEST_METHOD( TestOptMissingArgInBetween )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
             char* argv[] = { "prg.exe", "-d", "-l", "-k" };
 
             string err;
@@ -271,19 +270,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -293,23 +292,23 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsTrue( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsTrue( kill, L"kill is set" );
             Assert::AreEqual( string( "prg.exe: option requires argument -l\n" ), err, L"error msg differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
 
         TEST_METHOD( TestOptStartWithArgFail )
         {
             char opt;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "test", "-l/dev/home", "-k" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "test", "-l/user/home", "-k" };
 
             string err;
 
@@ -319,19 +318,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -341,23 +340,23 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
             Assert::AreEqual( string( "" ), err, L"error msg differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
 
         TEST_METHOD( TestOptStringStartWithColon )
         {
             char opt, erroropt = 0 ;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-l/dev/home", "-k" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-l/user/home", "-k" };
 
             string err;
 
@@ -367,19 +366,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -390,24 +389,24 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsTrue( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), logdir, L"logdir differs" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsTrue( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
             Assert::AreEqual( string( "prg.exe: missing option argument in :H:l:vdkh\n" ), err, L"error msg differs" );
             Assert::AreEqual( ':', erroropt, L"opt is not :" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
 
         TEST_METHOD( TestOptWithNonOptionArg )
         {
             char opt, erroropt = 0;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-l/dev/home", ":k" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-l/user/home", ":k" };
 
             string err;
 
@@ -417,19 +416,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -440,24 +439,24 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), logdir, L"logdir differs" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
             Assert::IsTrue( err.empty() , L"error msg differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
             Assert::AreEqual( ':', argv[getopt.getIndex()][0], L"First non option argument differs" );
         }
 
         TEST_METHOD( TestWithStopOptionArg )
         {
             char opt, erroropt = 0;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-l/dev/home", "--", "noarg" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-l/user/home", "--", "noarg" };
 
             string err;
 
@@ -467,19 +466,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -490,12 +489,12 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), logdir, L"logdir differs" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
             Assert::IsTrue( err.empty(), L"error msg differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
             Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
         }
 
@@ -503,12 +502,12 @@ namespace UnitTest
         {
             char opt, erroropt = '_';
             int error_count = 0;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-l/dev/home", "-k" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-l/user/home", "-k" };
 
             string err;
 
@@ -518,19 +517,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -542,25 +541,25 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
             Assert::AreEqual( string( "prg.exe: unknown option -k\n" ), err, L"last error msg differs" );
             Assert::AreEqual( '?', erroropt, L"opt is not _" );
             Assert::AreEqual( 2, error_count, L"error_count differs" );
-            Assert::IsTrue( sHome.empty(), L"sHome differs" );
+            Assert::IsTrue( homePath.empty(), L"homePath differs" );
         }
         
         TEST_METHOD( TestEmptyOption )
         {
             char opt, erroropt = '_';
             int error_count = 0;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
             char* argv[] = { "prg.exe", "-", "l", "-k" };
 
             string err;
@@ -571,19 +570,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -595,11 +594,11 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
-            Assert::AreEqual( string( "" ), sHome, L"sHome differs" );
+            Assert::AreEqual( string( "" ), homePath, L"homePath differs" );
             Assert::AreEqual( string( "" ), err, L"last error msg differs" );
             Assert::AreEqual( '_', erroropt, L"opt is not _" );
             Assert::AreEqual( 0, error_count, L"error_count differs" );
@@ -609,11 +608,11 @@ namespace UnitTest
         {
             char opt, erroropt = '_';
             int error_count = 0;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
             char* argv[] = { "prg.exe", "-:", "l", "-k" };
 
             string err;
@@ -624,19 +623,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -648,11 +647,11 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsFalse( bVerbose, L"verbose is set" );
-            Assert::IsFalse( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
+            Assert::IsFalse( verbose, L"verbose is set" );
+            Assert::IsFalse( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
             Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
-            Assert::AreEqual( string( "" ), sHome, L"sHome differs" );
+            Assert::AreEqual( string( "" ), homePath, L"homePath differs" );
             Assert::AreEqual( string( "prg.exe: unknown option -:\n" ), err, L"last error msg differs" );
             Assert::AreEqual( '?', erroropt, L"opt is not ?" );
             Assert::AreEqual( 1, error_count, L"error_count differs" );
@@ -784,12 +783,12 @@ namespace UnitTest
         {
             char opt;
             string err;
-            string sHome;
+            string homePath;
             string logdir;
-            bool bVerbose = false;
-            bool bDaemon = false;
-            bool bJustKill = false;
-            char* argv[] = { "prg.exe", "-H/dev/home", "-v", "-d" };
+            bool verbose = false;
+            bool daemon = false;
+            bool kill = false;
+            char* argv[] = { "prg.exe", "-H/user/home", "-v", "-d" };
 
 
             GetOpt getopt( _countof( argv ), argv, "H:l:vdkh" );
@@ -798,19 +797,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -820,19 +819,19 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsTrue( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), sHome, L"home differs" );
+            Assert::IsTrue( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), homePath, L"home differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
             Assert::IsTrue( err.empty(), L"err differs" );
 
             err.clear();
-            sHome.clear();
+            homePath.clear();
             logdir.clear();
-            bVerbose = false;
-            bDaemon = false;
-            bJustKill = false;
+            verbose = false;
+            daemon = false;
+            kill = false;
 
             getopt.reset();
             while ( ( opt = getopt() ) != EOF )
@@ -840,19 +839,19 @@ namespace UnitTest
                 switch ( opt )
                 {
                     case 'H':
-                        sHome = getopt.get();
+                        homePath = getopt.get();
                         break;
                     case 'l':
                         logdir = getopt.get();
                         break;
                     case 'v':
-                        bVerbose = true;
+                        verbose = true;
                         break;
                     case 'd':
-                        bDaemon = true;
+                        daemon = true;
                         break;
                     case 'k':
-                        bJustKill = true;
+                        kill = true;
                         break;
                     case '?':
                     case ':':
@@ -862,10 +861,10 @@ namespace UnitTest
                         break;
                 }
             }
-            Assert::IsTrue( bVerbose, L"verbose is not set" );
-            Assert::IsTrue( bDaemon, L"daemon is set" );
-            Assert::IsFalse( bJustKill, L"justkill is set" );
-            Assert::AreEqual( string( "/dev/home" ), sHome, L"home differs" );
+            Assert::IsTrue( verbose, L"verbose is not set" );
+            Assert::IsTrue( daemon, L"daemon is set" );
+            Assert::IsFalse( kill, L"kill is set" );
+            Assert::AreEqual( string( "/user/home" ), homePath, L"home differs" );
             Assert::IsTrue( logdir.empty(), L"logdir differs" );
             Assert::IsTrue( err.empty(), L"err differs" );
 
