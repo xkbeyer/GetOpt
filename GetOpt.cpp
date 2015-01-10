@@ -34,6 +34,7 @@ GetOpt::GetOpt( int argc, char* argv[], const std::string optstring )
     , optionString( optstring )
 {
 }
+
 char GetOpt::operator()()
 {
     optionArgument.clear();
@@ -47,11 +48,11 @@ char GetOpt::operator()()
         return ':';
     }
 
-    // Is end of argument list? or not an option or empty option 
+    // Is end of argument list? 
     if ( index >= argCount )
         return EOF;
 
-    // Is end of argument list reached? or empty option 
+    // Is a non option argument reached?  
     if ( argStrings[index][0] != '-' || argStrings[index][1] == '\0' )
         return EOF;
 
@@ -109,7 +110,7 @@ char GetOpt::operator()()
 }
 
 
-char GetOpt::iterator::operator*( )
+char GetOpt::iterator::operator*()
 {
    auto ret = getopt->operator()();
    if ( ret == EOF )
