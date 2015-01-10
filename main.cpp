@@ -9,20 +9,20 @@
 
 using namespace std;
 
-int main(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
     char opt = -1;
     string aPath;
     string aLogFileName;
     int levelVerbose  = 0;
-    bool bDaemon   = false;
-    bool bJustKill = false;
-    GetOpt getopt( argc, argv, "H:l:v::dkh" );
+    bool daemon   = false;
+    bool kill = false;
+    GetOpt getopt( argc, argv, "p:l:v::dkh" );
     while ( ( opt = getopt() ) != EOF )
     {
         switch ( opt )
         {
-            case 'H':
+            case 'p':
                 aPath = getopt.get() ;
                 break;
             case 'l':
@@ -39,10 +39,10 @@ int main(int argc, _TCHAR* argv[])
                 }
                 break;
             case 'd':
-                bDaemon = true;
+                daemon = true;
                 break;
             case 'k':
-                bJustKill = true;
+                kill = true;
                 break;
             case '?':
             case ':':
@@ -50,7 +50,7 @@ int main(int argc, _TCHAR* argv[])
             case 'h':
             default:
                 cout << "usage: " << argv[0] << "[-p path][-l logfile][-v level][-h][-k][-d]\n";
-                cout << "      -H HOMEDIR assume the home directory to be HOMEDIR.\n";
+                cout << "      -p path    assume the home directory to be path.\n";
                 cout << "      -l logfile sets the directory to write logfiles\n";
                 cout << "      -v         activates verbose level. Level is optional.\n";
                 cout << "      -d         start as a daemon\n";
@@ -59,6 +59,11 @@ int main(int argc, _TCHAR* argv[])
                 break;
         }
     }
+    cout << "homepath is set to " << aPath << '\n';
+    cout << "Name of the log file is set to " << aLogFileName << '\n';
+    cout << "Verbose level is set to " << levelVerbose << '\n';
+    cout << "Action daemon is set to " << daemon << '\n';
+    cout << "Action kill is set to " << kill << '\n';
 
     return 0;
 }
