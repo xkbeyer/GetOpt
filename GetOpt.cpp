@@ -23,16 +23,20 @@
  */
 
 #include <stdio.h>  // EOF const
+#include <iostream>
+#include <fstream>
 
 #include "GetOpt.h"
 
 
-GetOpt::GetOpt( int argc, char* argv[], const std::string optstring ) 
-    : index( 1 )
-    , argCount( argc )
-    , argStrings( argv )
-    , optionString( optstring )
+GetOpt::GetOpt( int argc, char* argv[], const std::string optstring)
+   : index( 1 )
+   , argCount( argc )
+   , optionString( optstring )
 {
+   for( int i = 0; i < argCount; ++i ) {
+      argStrings.push_back( argv[i] );
+   }
 }
 
 char GetOpt::operator()()
@@ -63,12 +67,12 @@ char GetOpt::operator()()
         return EOF;
     }
 
-    // Skip '-'
-    auto scan = argStrings[index] + 1;
+    auto scan = argStrings[index];
     index++;
 
+    // Skip '-'
     // Is current character in the option string 
-    char c = *scan++;
+    char c = scan[1];
     auto place = optionString.find_first_of( c );
     if ( place == std::string::npos || c == ':' )
     {
@@ -83,9 +87,9 @@ char GetOpt::operator()()
         place++;
         bool argIsOptional = optionString[place] == ':';
         // Check if no space is between option and its argument.
-        if ( *scan != '\0' )
+        if ( scan[2] != '\0' )
         {
-            optionArgument = scan;
+            optionArgument = scan.substr(2);
         }
         else if ( index < argCount )
         {

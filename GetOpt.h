@@ -23,11 +23,13 @@
  */
 
 #include <string>
+#include <vector>
+
 class GetOpt
 {
 public:
 
-    GetOpt( int argc, char* argv[], const std::string optstring );
+    GetOpt( int argc, char* argv[], const std::string optstring);
     std::string get() { return optionArgument; }
     std::string error() { return errorText; }
     int getIndex() { return index; }
@@ -53,7 +55,7 @@ private:
     std::string optionArgument; /* Global argument pointer. */
     int index; /* Global argv index. */
     int argCount;
-    char** argStrings;
     std::string optionString;
     std::string errorText;
+    std::vector<std::string> argStrings;
 };
