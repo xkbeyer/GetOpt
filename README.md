@@ -51,7 +51,9 @@ The file `myargs.txt` might look like this:
 	-d
 	-l /home/user/logs
 ```
-Hint: Currently only one argument per line is supported.
+*Hint 1: Currently only one argument per line is supported.*
+
+*Hint 2: Command line oprtions win over the ones from the file.*
 
 ## Option String ##
 The option string (3nd argument) has the same format and meaning as the [`getopt()`](http://man7.org/linux/man-pages/man3/getopt.3.html) function.
@@ -63,6 +65,4 @@ A lot of examples can be found in the unit test folder.
 
 TODO
 ====
-- Overwriting arguments from the file with the one given by argv. Currently no check is there and duplicated
-arguments are treated twice (or even more).
 - Find a way to handle options file if given by argv. 

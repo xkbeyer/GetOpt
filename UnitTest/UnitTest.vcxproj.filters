@@ -38,5 +38,8 @@
     <ClCompile Include="unittest3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testduplicates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

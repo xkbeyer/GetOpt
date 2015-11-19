@@ -25,6 +25,7 @@
 #include <stdio.h>  // EOF const
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "GetOpt.h"
 
@@ -46,7 +47,11 @@ GetOpt::GetOpt( int argc, char* argv[], const std::string optstring, const std::
 {
    argStrings.push_back( argv[0] );
 
-   // Put the option from the file in front.
+   // Put cmd line options into front, they win over the file options.
+   for(int i = 1; i < argc; ++i) {
+      argStrings.push_back(argv[i]);
+   }
+
    if( !filename.empty() ) {
       std::ifstream file;
       file.open( filename );
@@ -59,13 +64,11 @@ GetOpt::GetOpt( int argc, char* argv[], const std::string optstring, const std::
                line = line.substr( 0, 2 ) + removeLeftWhiteSpaces( arg );
             }
          }
-         argStrings.push_back( line );
+         auto found = std::count_if(std::begin(argStrings), std::end(argStrings), [line](auto s) { return line == s; });
+         if(found == 0) {
+            argStrings.push_back(line);
+         }
       }
-   }
-
-   // TODO Check for overwritten arguments or duplicates.
-   for( int i = 1; i < argc; ++i ) {
-      argStrings.push_back( argv[i] );
    }
 
    argCount = argStrings.size();

@@ -245,17 +245,17 @@ namespace UnitTest
          }
          Assert::IsFalse( verbose, L"verbose is set" );
          Assert::IsFalse( daemon, L"daemon is set" );
-         Assert::IsTrue( kill, L"kill is set" );
-         Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
+         Assert::IsFalse( kill, L"kill is set" );
+         Assert::IsTrue( logdir.empty(), L"logdir is set" );
          Assert::IsTrue( err.empty(), L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
-         Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()-2] ), L"First non option argument differs" );
+         Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
       }
 
-      TEST_METHOD( TestFileWithStopOptionArgInFile )
+      TEST_METHOD( TestFileWithUnexceptedOptionArg )
       {
          char* argv[] = { "prg.exe", "-d", "noarg" };
-         optarray options = { "-l/user/home", "-k", "--" };
+         optarray options = { "-l/user/home", "-k" };
          createOptionFile( options );
 
          GetOpt getopt( _countof( argv ), argv, "H:l:vdkh", optFileName );
@@ -263,12 +263,31 @@ namespace UnitTest
             setOptions( opt, getopt );
          }
          Assert::IsFalse( verbose, L"verbose is set" );
-         Assert::IsFalse( daemon, L"daemon is set" );
-         Assert::IsTrue( kill, L"kill is set" );
-         Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
+         Assert::IsTrue( daemon, L"daemon is set" );
+         Assert::IsFalse( kill, L"kill is set" );
+         Assert::IsTrue( logdir.empty(), L"logdir is not empty" );
          Assert::IsTrue( err.empty(), L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
-         Assert::AreEqual( std::string( "-d" ), std::string( argv[getopt.getIndex()-3] ), L"First non option argument differs" );
+         Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
+      }
+
+      TEST_METHOD(TestFileWithStopOptionArgInFile)
+      {
+         char* argv[] = { "prg.exe", "-d"};
+         optarray options = { "-l/usr/home", "--" , "noarg"};
+         createOptionFile(options);
+
+         GetOpt getopt(_countof(argv), argv, "H:l:vdkh", optFileName);
+         for(auto opt : getopt) {
+            setOptions(opt, getopt);
+         }
+         Assert::IsFalse(verbose, L"verbose is set");
+         Assert::IsTrue(daemon, L"daemon is set");
+         Assert::IsFalse(kill, L"kill is set");
+         Assert::AreEqual(std::string("/usr/home"), logdir, L"logdir differs");
+         Assert::IsTrue(err.empty(), L"error msg differs");
+         Assert::IsTrue(homePath.empty(), L"homePath differs");
+         Assert::AreEqual(std::string("noarg"), options[getopt.getIndex()-2], L"First non option argument differs");
       }
 
       TEST_METHOD( TestFileOptionalArgument )
