@@ -11,6 +11,8 @@
 *.log
 *.ex*
 *.opensdf
+*.VC.opendb
+*.VC.db
 
 # Ignore the VC++ build folders
 Debug/
