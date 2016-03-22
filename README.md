@@ -53,16 +53,53 @@ The file `myargs.txt` might look like this:
 ```
 *Hint 1: Currently only one argument per line is supported.*
 
-*Hint 2: Command line oprtions win over the ones from the file.*
-
+*Hint 2: Command line options win over the ones from the file.*
+ 
 ## Option String ##
 The option string (3nd argument) has the same format and meaning as the [`getopt()`](http://man7.org/linux/man-pages/man3/getopt.3.html) function.
 Currently the long option format is not supported.
 
+## Remaining Arguments ##
+All not by the option string handled arguments are internally stored and can be retrieved via the method `getRemainingArguments()`. This works only after looping over the options, otherwise all arguments are returned as they are.
+```CPP
+	auto noopts = getopt.getRemainingArguments();
+	for( auto arg : noopt ) {
+	...
+	}
+```
+
 Examples
 ========
+```CPP
+   char opt = 0;
+   char* argv[] = { "prg.exe", "-a", "firstfile", "-H", "/user/home", "filename", "-x" };
+   string optionH;
+   string filename;
+   bool optA = false;
+   bool optX = false;
+   GetOpt getopt(_countof(argv), argv, "axH:");
+   for( auto opt : getopt ) {
+      switch( opt ) {
+         case 'H':
+            optionH = getopt.get();
+            break;
+         case 'a':
+            optA = true;
+            break;
+         case 'x':
+            optX = true;
+            break;
+      }
+   }
+   std::cout << "Remainig arguments are:\n";
+   auto noopts = getopt.getRemainingArguments();
+   for( auto arg : noopts ) {
+      std::cout << arg << " ";
+   }
+
+```
 A lot of examples can be found in the unit test folder.
 
 TODO
 ====
-- Find a way to handle options file if given by argv. 
+- Find a way to handle a options file name given by argv. 

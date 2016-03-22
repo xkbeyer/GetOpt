@@ -95,6 +95,7 @@
     <ClCompile Include="unittest1.cpp" />
     <ClCompile Include="unittest2.cpp" />
     <ClCompile Include="unittest3.cpp" />
+    <ClCompile Include="unittest4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

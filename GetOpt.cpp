@@ -45,12 +45,12 @@ GetOpt::GetOpt( int argc, char* argv[], const std::string optstring, const std::
    : index( 1 )
    , optionString( optstring )
 {
-   argStrings.push_back( argv[0] );
 
    // Put cmd line options into front, they win over the file options.
-   for(int i = 1; i < argc; ++i) {
+   for(int i = 0; i < argc; ++i) {
       argStrings.push_back(argv[i]);
    }
+
 
    if( !filename.empty() ) {
       std::ifstream file;
@@ -87,12 +87,21 @@ char GetOpt::operator()()
    }
 
    // Is end of argument list? 
-   if( index >= argCount )
+   if( index >= argCount ) {
       return EOF;
+   }
 
    // Is a non option argument reached?  
-   if( argStrings[index][0] != '-' || argStrings[index][1] == '\0' )
-      return EOF;
+   if( argStrings[index][0] != '-' ) {
+      if( argStrings[index][1] == '\0' )
+         return EOF;
+      if( index == argCount - 1 ) {
+         return EOF;
+      }
+      std::rotate(argStrings.begin()+index, argStrings.begin()+index+1, argStrings.end());
+      --argCount;
+      return this->operator()();
+   }
 
    // Is end of argument list reached? 
    if( argStrings[index][0] == '-' && argStrings[index][1] == '-' ) {
@@ -134,6 +143,12 @@ char GetOpt::operator()()
       }
    }
    return c;
+}
+
+std::vector<std::string> GetOpt::getRemainingArguments()
+{
+   std::vector<std::string> args(argStrings.begin() + index, argStrings.end());
+   return args;
 }
 
 

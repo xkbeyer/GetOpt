@@ -194,10 +194,13 @@ namespace UnitTest
          }
          Assert::IsFalse( verbose, L"verbose is set" );
          Assert::IsFalse( daemon, L"daemon is set" );
-         Assert::IsFalse( kill, L"kill is set" );
-         Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
+         Assert::IsTrue( kill, L"kill is set" );
+         Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
          Assert::AreEqual( string( "" ), err, L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(1, (int) noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("test"), noopts[0]);
       }
 
       TEST_METHOD( TestOptStringStartWithColon )
@@ -255,6 +258,9 @@ namespace UnitTest
          Assert::IsTrue( err.empty(), L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
          Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(1, (int) noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("noarg"), noopts[0]);
       }
 
       TEST_METHOD( TestEmptyOptString )
@@ -292,9 +298,10 @@ namespace UnitTest
          Assert::IsFalse( kill, L"kill is set" );
          Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
          Assert::AreEqual( string( "" ), homePath, L"homePath differs" );
-         Assert::AreEqual( string( "" ), err, L"last error msg differs" );
-         Assert::AreEqual( '_', erroropt, L"opt is not _" );
-         Assert::AreEqual( 0, error_count, L"error_count differs" );
+         string errtxt = string("prg.exe: unknown option -") + '\0' + "\n";
+         Assert::AreEqual( errtxt, err, L"last error msg differs" );
+         Assert::AreEqual( '?', erroropt, L"opt is not _" );
+         Assert::AreEqual( 1, error_count, L"error_count differs" );
       }
 
       TEST_METHOD( TestColonOption )

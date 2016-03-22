@@ -37,6 +37,7 @@ public:
    int getIndex() { return index; }
    void reset() { index = 1; };
    char operator()();
+   std::vector<std::string> getRemainingArguments();
 
    class iterator
    {
@@ -44,14 +45,16 @@ public:
       iterator( GetOpt* getopt ) : getopt( getopt ), position( 1 ) {};
       iterator( int pos ) : position( pos ) {};
       iterator& operator++() { ++position; return *this; }  // prefix
-      bool operator!=(iterator rhs) { return position != rhs.position; }
+      bool operator!=(iterator rhs) { 
+         return position != rhs.getopt->argCount; 
+      }
       char operator*();
    private:
       int position;
       GetOpt* getopt;
    };
    iterator begin() { return iterator( this ); }
-   iterator end() { return iterator( argCount ); }
+   iterator end() { return iterator( this ); }
    friend class iterator;
 private:
    std::string optionArgument; /* Global argument pointer. */

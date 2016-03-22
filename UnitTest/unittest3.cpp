@@ -206,10 +206,13 @@ namespace UnitTest
          }
          Assert::IsFalse( verbose, L"verbose is set" );
          Assert::IsFalse( daemon, L"daemon is set" );
-         Assert::IsFalse( kill, L"kill is set" );
-         Assert::AreEqual( string( "" ), logdir, L"logdir differs" );
+         Assert::IsTrue( kill, L"kill is set" );
+         Assert::AreEqual( string( "/user/home" ), logdir, L"logdir differs" );
          Assert::AreEqual( string( "" ), err, L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(1, (int) noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("test"), noopts[0], L"no opt arg is wrong.");
       }
 
       TEST_METHOD( TestFileOptWithNonOptionArg )
@@ -249,7 +252,11 @@ namespace UnitTest
          Assert::IsTrue( logdir.empty(), L"logdir is set" );
          Assert::IsTrue( err.empty(), L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
-         Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(3, (int) noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("noarg"), noopts[0], L"no opt arg is wrong.");
+         Assert::AreEqual(std::string("-l/user/home"), noopts[1], L"no opt arg is wrong.");
+         Assert::AreEqual(std::string("-k"), noopts[2], L"no opt arg is wrong.");
       }
 
       TEST_METHOD( TestFileWithUnexceptedOptionArg )
@@ -264,11 +271,13 @@ namespace UnitTest
          }
          Assert::IsFalse( verbose, L"verbose is set" );
          Assert::IsTrue( daemon, L"daemon is set" );
-         Assert::IsFalse( kill, L"kill is set" );
-         Assert::IsTrue( logdir.empty(), L"logdir is not empty" );
+         Assert::IsTrue( kill, L"kill is set" );
+         Assert::AreEqual(string("/user/home"), logdir, L"logdir is not empty" );
          Assert::IsTrue( err.empty(), L"error msg differs" );
          Assert::IsTrue( homePath.empty(), L"homePath differs" );
-         Assert::AreEqual( std::string( "noarg" ), std::string( argv[getopt.getIndex()] ), L"First non option argument differs" );
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(1, (int) noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("noarg"), noopts[0], L"no opt arg is wrong.");
       }
 
       TEST_METHOD(TestFileWithStopOptionArgInFile)
@@ -288,6 +297,9 @@ namespace UnitTest
          Assert::IsTrue(err.empty(), L"error msg differs");
          Assert::IsTrue(homePath.empty(), L"homePath differs");
          Assert::AreEqual(std::string("noarg"), options[getopt.getIndex()-2], L"First non option argument differs");
+         auto noopts = getopt.getRemainingArguments();
+         Assert::AreEqual(1, (int)noopts.size(), L"size of no opts.");
+         Assert::AreEqual(std::string("noarg"), noopts[0], L"no opt arg is wrong.");
       }
 
       TEST_METHOD( TestFileOptionalArgument )
@@ -325,8 +337,20 @@ namespace UnitTest
          Assert::AreEqual( 0, error_count, L"error_count differs" );
       }
 
+      TEST_METHOD(GetRemainingArgsOnlyWithFileOptions)
+      {
+         char opt = 0;
+         char* argv[] = { "prg.exe", "firstfile", "-H", "/user/home", "filename", "-x" };
+         optarray options = { "-a" };
+         createOptionFile(options);
 
-
+         GetOpt getopt(_countof(argv), argv, "axH:", optFileName);
+         auto noopts = getopt.getRemainingArguments();
+         for( int i = 0; i < noopts.size() - 1; ++i ) {
+            Assert::AreEqual(string(argv[i + 1]), noopts[i]);
+         }
+         Assert::AreEqual(options[0], noopts[5]);
+      }
    };
 
 }

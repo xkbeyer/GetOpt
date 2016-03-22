@@ -64,7 +64,6 @@ int main(int argc, char* argv[])
     cout << "Verbose level is set to " << levelVerbose << '\n';
     cout << "Action daemon is set to " << daemon << '\n';
     cout << "Action kill is set to " << kill << '\n';
-
     return 0;
 }
 
