@@ -1,7 +1,7 @@
 GetOpt
 ======
-This is somehow a substitution for the function `getopt()`.
-My intention was to have a simple class which I can use in MSVS projects.
+This is some kind of substitution for the `getopt()` function.
+The intention is to have a simple class usable in MSVS projects.
 
 Installation
 ============
@@ -39,9 +39,8 @@ However, it can be used with a range-based for loop, like:
     }
 ```
 ## Option File ##
-Another option is to provide a file with some arguments. May be you have a lot of options and the most
-doesn't change, but you want to play with some. In such a case put the stable ones in a file and the other
-per command line. The options out of the file are put in front of the ones given by `argv`.
+Another option is to provide a file with arguments. May be you have a lot of options and most
+do not change, but you want to play with some. In such scenario, put the stable ones in a file and the other via command line. The options that are not in the file are put in front of the ones given by `argv`.
 ```CPP
     GetOpt getopt( argc, argv, "H:l:vdkh", "myargs.txt" );
 	...
@@ -60,7 +59,7 @@ The option string (3nd argument) has the same format and meaning as the [`getopt
 Currently the long option format is not supported.
 
 ## Remaining Arguments ##
-All not by the option string handled arguments are internally stored and can be retrieved via the method `getRemainingArguments()`. This works only after looping over the options, otherwise all arguments are returned as they are.
+All arguments not handled by the option string are stored internally and can be retrieved via the method `getRemainingArguments()`. This works only after looping over the options, otherwise all arguments are returned as they are.
 ```CPP
 	auto noopts = getopt.getRemainingArguments();
 	for( auto arg : noopt ) {
