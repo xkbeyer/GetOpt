@@ -1,6 +1,6 @@
 GetOpt
 ======
-This is in some way a substitution for the function `getopt()`.
+This is some kind of substitution for the `getopt()` function.
 The intention is to have a simple class usable in MSVS projects.
 
 Installation
@@ -59,7 +59,7 @@ The option string (3nd argument) has the same format and meaning as the [`getopt
 Currently the long option format is not supported.
 
 ## Remaining Arguments ##
-All arguments not handled by by the option string are stored internally and can be retrieved via the method `getRemainingArguments()`. This works only after looping over the options, otherwise all arguments are returned as they are.
+All arguments not handled by the option string are stored internally and can be retrieved via the method `getRemainingArguments()`. This works only after looping over the options, otherwise all arguments are returned as they are.
 ```CPP
 	auto noopts = getopt.getRemainingArguments();
 	for( auto arg : noopt ) {
