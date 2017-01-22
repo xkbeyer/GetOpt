@@ -18,6 +18,7 @@
 Debug/
 Release/
 ipch/
+.vs/
 
 # Ignore KDevelop-specific folders too
 .kdev*
